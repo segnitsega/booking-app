@@ -1,120 +1,69 @@
 # SlotWise
 
-**Timezone-aware booking for coaches and consultants.**
+Timezone-aware booking for coaches and consultants.
 
-SlotWise is a Calendly-style scheduling product with a public coach profile, a polished booking flow, and an authenticated dashboard for managing availability, session types, and bookings. It is built as a production-shaped Next.js portfolio app — UI-forward, fullstack, and ready to demo.
+Public coach profiles, a calendar booking flow, and a Clerk-authenticated dashboard for availability, session types, and bookings.
 
-Public surfaces use a BrandElevate-inspired editorial look; the dashboard keeps the same language with denser, work-oriented layouts.
-
----
-
-## Features
-
-### Public booking
-- Coach profile with services, process, testimonials, and blog-style sections
-- Session booking with calendar + slot picker
-- Client timezone conversion against coach working hours
-- Confirmation page with `.ics` download
-- Booking confirmation email via Resend
-
-### Coach dashboard (Clerk-authenticated)
-- Home with upcoming sessions and booking stats
-- Bookings list (upcoming / past / cancelled)
-- Weekly hours + date overrides (days off / special hours)
-- Session types CRUD (title, slug, duration, price, color, active)
-- Settings: profile, username, bio, avatar, timezone
-- Mock Google Calendar connect (UI-only)
-
-### Reliability & polish
-- Skeleton loaders, branded empty states, and error boundaries
-- Responsive layouts for profile, booking, and dashboard
-- Prisma models with seeded featured coach (`home`)
+**Live demo:** [Add your deployed URL here](https://your-app.example.com)
 
 ---
 
 ## Stack
 
-| Layer | Choice |
-| --- | --- |
-| Framework | Next.js 16 (App Router), React 19 |
-| Styling | Tailwind CSS 4, custom design tokens |
-| Database | PostgreSQL (Neon-ready) + Prisma 6 |
-| Auth | Clerk |
-| Email | Resend |
-| Dates | `date-fns` + `date-fns-tz` |
-| Motion | Framer Motion |
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS 4**
+- **PostgreSQL** + **Prisma 6** (Neon)
+- **Clerk** (auth)
+- **Resend** (booking emails)
+- **Docker** (production image)
 
 ---
 
-## Key routes
+## Features
 
-After seeding locally:
-
-| Surface | URL |
-| --- | --- |
-| Landing | `/` |
-| Public profile | `/home` |
-| Book a session | `/home/discovery-call` |
-| Coach login | `/sign-in` |
-| Dashboard | `/dashboard` |
-
-The first signed-in user can claim the seeded `home` coach when `DEMO_CLAIM_USERNAME=home` (default) and that coach still uses the demo `clerkUserId` from the seed script.
+- Public coach profile and session booking with timezone-aware slots
+- Confirmation page with `.ics` download and optional email via Resend
+- Coach dashboard: bookings, weekly hours, date overrides, session types, settings
+- Role-gated dashboard (coaches only)
+- Seeded demo coach at `/home`
 
 ---
 
 ## Getting started
 
-### Prerequisites
-- Node.js 20+
-- A PostgreSQL database (Neon, Supabase, or local)
-- Clerk application keys
-- Optional: Resend API key for live email
-
-### 1. Install
+**Requirements:** Node.js 20+, PostgreSQL (e.g. Neon), Clerk keys. Resend optional.
 
 ```bash
 npm install
 cp .env.example .env
-```
+# fill in DATABASE_URL, Clerk, and optional Resend values
 
-### 2. Configure environment
-
-Fill in `.env` (and `.env.local` if you use Clerk’s keyless / CLI setup):
-
-```bash
-DATABASE_URL=postgresql://...
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-
-# Clerk
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
-NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
-
-# Optional email
-RESEND_API_KEY=re_...
-RESEND_FROM_EMAIL="BrandElevate <onboarding@resend.dev>"
-
-# Optional: claim seeded coach on first sign-in
-DEMO_CLAIM_USERNAME=home
-```
-
-### 3. Database
-
-```bash
-npm run db:migrate
+npx prisma migrate deploy
 npm run db:seed
-```
-
-### 4. Run
-
-```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+### Environment
+
+See [`.env.example`](.env.example) for the full list. At minimum:
+
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Postgres connection string |
+| `NEXT_PUBLIC_APP_URL` | Public site URL |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` | Clerk auth |
+| `RESEND_API_KEY` / `RESEND_FROM_EMAIL` | Booking emails (optional) |
+
+### Docker
+
+```bash
+npm run docker:build
+npm run docker:run
+```
+
+Uses values from `.env` (including your Neon `DATABASE_URL`).
 
 ---
 
@@ -122,72 +71,14 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Command | Description |
 | --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run build` | Production build |
-| `npm run start` | Serve the production build |
-| `npm run lint` | ESLint |
-| `npm run db:generate` | Generate Prisma Client |
-| `npm run db:migrate` | Run migrations (dev) |
-| `npm run db:seed` | Seed demo coach + sessions |
-| `npm run db:studio` | Open Prisma Studio |
-
----
-
-## Architecture notes
-
-**Availability** — Slots are computed server-side from weekly hours, date overrides, existing confirmed bookings, and session duration. Results are labeled in the guest’s timezone while working hours stay in the coach’s timezone.
-
-**Auth** — Clerk protects `/dashboard`. On first visit, SlotWise resolves or creates a `Coach` row by `clerkUserId` (or claims the seeded demo coach when configured).
-
-**Email** — Confirmation emails are sent after a successful booking. If Resend is not configured, the booking still succeeds and the server logs a warning.
-
-**Data model** — `Coach`, `SessionType`, `Availability`, `DateOverride`, `Booking` (see `prisma/schema.prisma`).
-
----
-
-## Project structure
-
-```text
-app/
-  [username]/              # Public profile + booking + confirmation
-  dashboard/               # Authenticated coach workspace
-  api/                     # Availability + ICS endpoints
-  sign-in/ · sign-up/      # Clerk auth pages
-components/
-  booking/ · profile/ · dashboard/ · brand/
-lib/
-  availability/            # Slot generation
-  bookings/ · email/ · dashboard/
-prisma/
-  schema.prisma · seed.ts
-```
-
----
-
-## Deployment (Vercel)
-
-1. Push the repo and import it in Vercel.
-2. Set the same environment variables as local (production Clerk + Resend + `DATABASE_URL` + `NEXT_PUBLIC_APP_URL`).
-3. Run migrations against production Postgres:
-
-```bash
-npx prisma migrate deploy
-npx prisma db seed
-```
-
-4. Confirm `/home` and `/dashboard` after deploy.
-
----
-
-## Roadmap / stretch
-
-- Stripe for paid sessions
-- Real Google Calendar two-way sync
-- Booking cancellation + email
-- Waitlists / buffer times between sessions
+| `npm run dev` | Development server |
+| `npm run build` / `npm start` | Production build & serve |
+| `npm run db:migrate` | Prisma migrate (dev) |
+| `npm run db:seed` | Seed demo coach + bookings |
+| `npm run docker:up` | Build and run the Docker image |
 
 ---
 
 ## License
 
-Private portfolio project. All rights reserved unless otherwise noted.
+Private project. All rights reserved.
