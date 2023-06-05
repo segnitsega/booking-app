@@ -11,9 +11,9 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "docker:up": "docker compose up --build",
-    "docker:seed": "docker compose --profile seed run --rm seed",
-    "docker:down": "docker compose down"
+    "docker:build": "docker build -t booking-app --build-arg NEXT_PUBLIC_APP_URL --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_URL --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_URL --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL --build-arg NEXT_PUBLIC_FEATURED_COACH_USERNAME .",
+    "docker:run": "docker run --rm -p 3000:3000 --env-file .env booking-app",
+    "docker:up": "npm run docker:build && npm run docker:run"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.1",

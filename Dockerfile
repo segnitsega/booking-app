@@ -14,11 +14,11 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Prisma generate needs a URL; runtime DATABASE_URL comes from Compose/host.
-ENV DATABASE_URL="postgresql://slotwise:slotwise@127.0.0.1:5432/slotwise"
+# Prisma generate needs a URL; the real Neon URL is supplied at runtime.
+ENV DATABASE_URL="postgresql://placeholder:placeholder@127.0.0.1:5432/placeholder"
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# NEXT_PUBLIC_* are inlined at build time — pass via Compose build.args / --build-arg.
+# NEXT_PUBLIC_* are inlined at build time — pass with --build-arg (see npm run docker:build).
 ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
 ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 ARG NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
@@ -38,17 +38,6 @@ ENV NEXT_PUBLIC_FEATURED_COACH_USERNAME=$NEXT_PUBLIC_FEATURED_COACH_USERNAME
 RUN npx prisma generate
 RUN npm run build
 
-# Full toolchain image for migrations / seeding
-FROM base AS migrator
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
-CMD ["npx", "prisma", "migrate", "deploy"]
-
-# Slim production runtime
 FROM base AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -62,7 +51,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Prisma Client used by the Next server
+# Prisma Client used by the Next server at runtime
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
