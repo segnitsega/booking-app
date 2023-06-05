@@ -4,7 +4,17 @@ Timezone-aware booking for coaches and consultants.
 
 Public coach profiles, a calendar booking flow, and a Clerk-authenticated dashboard for availability, session types, and bookings.
 
-**Live demo:** [Add your deployed URL here](https://your-app.example.com)
+**Live demo:** [https://booking-2memwtsh5-segnitsegas-projects.vercel.app](https://booking-2memwtsh5-segnitsegas-projects.vercel.app/)
+
+### Demo accounts
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Coach | `coach.slotwise@example.com` | `SlotWiseTest123!` |
+| Client | `client.slotwise@example.com` | `SlotWiseTest123!` |
+
+- Coach → `/dashboard` (bookings, availability, session types, settings)
+- Client → public booking only (dashboard is blocked)
 
 ---
 
