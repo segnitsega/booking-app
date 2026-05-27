@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Show } from "@clerk/nextjs";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { Button } from "@/components/ui/button";
 
@@ -53,14 +55,32 @@ export function ProfileNav({ primarySessionHref }: ProfileNavProps) {
           ))}
         </nav>
 
-        <Button
-          href={primarySessionHref}
-          variant="ghost"
-          showArrow={false}
-          className="shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm"
-        >
-          Book a consultation
-        </Button>
+        <div className="flex shrink-0 items-center gap-2">
+          <Show when="signed-out">
+            <Link
+              href="/sign-in?redirect_url=%2Fdashboard"
+              className="hidden rounded-full px-3 py-2 text-xs font-medium text-white/85 transition-colors hover:bg-white/10 hover:text-white sm:inline-flex"
+            >
+              Coach login
+            </Link>
+          </Show>
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="hidden rounded-full px-3 py-2 text-xs font-medium text-white/85 transition-colors hover:bg-white/10 hover:text-white sm:inline-flex"
+            >
+              Dashboard
+            </Link>
+          </Show>
+          <Button
+            href={primarySessionHref}
+            variant="ghost"
+            showArrow={false}
+            className="shrink-0 px-3 py-2 text-xs sm:px-4 sm:text-sm"
+          >
+            Book a consultation
+          </Button>
+        </div>
       </div>
 
       <nav className="pointer-events-auto mx-auto mt-3 flex max-w-6xl gap-2 overflow-x-auto pb-1 [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
@@ -78,6 +98,17 @@ export function ProfileNav({ primarySessionHref }: ProfileNavProps) {
             {link.label}
           </a>
         ))}
+        <Link
+          href="/sign-in?redirect_url=%2Fdashboard"
+          className={[
+            "shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition-colors",
+            scrolled
+              ? "border-white/15 bg-ink/80"
+              : "border-white/20 bg-white/10",
+          ].join(" ")}
+        >
+          Coach login
+        </Link>
       </nav>
     </header>
   );
