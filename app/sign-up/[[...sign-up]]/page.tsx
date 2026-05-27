@@ -1,6 +1,7 @@
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand/brand-logo";
+import { clerkAuthAppearance } from "@/lib/clerk-appearance";
 
 type SignUpPageProps = {
   searchParams: Promise<{ redirect_url?: string }>;
@@ -17,8 +18,8 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
   );
 
   return (
-    <main className="relative flex min-h-full flex-1 flex-col bg-accent-soft">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(var(--accent-glow),0.16),transparent_55%)]" />
+    <main className="relative flex min-h-full flex-1 flex-col overflow-hidden bg-[#f7f5fc]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(var(--accent-glow),0.14),transparent_55%)]" />
       <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center px-6 py-16">
         <BrandLogo href="/" />
         <p className="mt-6 text-center text-sm text-muted">
@@ -26,16 +27,11 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             ? "Create an account to finish booking your session."
             : "Create an account to manage sessions and availability."}
         </p>
-        <div className="mt-8 w-full">
+        <div className="mt-8 w-full [&_.cl-cardBox]:shadow-none [&_.cl-card]:shadow-none">
           <SignUp
             forceRedirectUrl={safeRedirect}
             fallbackRedirectUrl={safeRedirect ?? "/dashboard"}
-            appearance={{
-              elements: {
-                rootBox: "mx-auto w-full",
-                card: "shadow-none ring-1 ring-border",
-              },
-            }}
+            appearance={clerkAuthAppearance}
           />
         </div>
         <p className="mt-6 text-center text-sm text-muted">
