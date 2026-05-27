@@ -32,28 +32,22 @@ export function ProfileAbout({ name, bio, avatarUrl }: ProfileAboutProps) {
         </div>
 
         <div className="relative mx-auto h-[420px] w-full max-w-md">
-          <div className="absolute top-0 left-0 h-[320px] w-[240px] overflow-hidden rounded-[1.5rem] bg-surface shadow-xl sm:h-[360px] sm:w-[270px]">
-            {avatarUrl ? (
-              <Image
-                src={avatarUrl}
-                alt={name}
-                fill
-                unoptimized
-                className="object-cover object-top"
-                sizes="270px"
-              />
-            ) : (
-              <Image
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
-                alt={name}
-                fill
-                className="object-cover"
-                sizes="270px"
-              />
-            )}
+          <div className="absolute top-0 left-0 h-[320px] w-[240px] overflow-hidden rounded-[1.5rem] bg-surface ring-1 ring-border sm:h-[360px] sm:w-[270px]">
+            <Image
+              src={
+                avatarUrl && !avatarUrl.includes("dicebear.com")
+                  ? avatarUrl
+                  : "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"
+              }
+              alt={name}
+              fill
+              unoptimized={Boolean(avatarUrl?.includes("dicebear.com"))}
+              className="object-cover object-top"
+              sizes="270px"
+            />
           </div>
 
-          <div className="absolute right-0 bottom-2 h-[200px] w-[170px] overflow-hidden rounded-[1.35rem] bg-white shadow-xl ring-4 ring-white sm:h-[220px] sm:w-[190px]">
+          <div className="absolute right-0 bottom-2 h-[200px] w-[170px] overflow-hidden rounded-[1.35rem] bg-white ring-1 ring-border ring-offset-2 ring-offset-white sm:h-[220px] sm:w-[190px]">
             <Image
               src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=700&q=80"
               alt="Studio workspace"

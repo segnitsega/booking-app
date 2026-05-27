@@ -18,7 +18,8 @@ async function main() {
       name: "Alex Rivera",
       username: "alex",
       bio: "Business coach helping founders build personal brands and sustainable growth systems.",
-      avatarUrl: "https://api.dicebear.com/9.x/avataaars/svg?seed=AlexRivera",
+      avatarUrl:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
       timezone: "America/New_York",
       sessionTypes: {
         create: [
