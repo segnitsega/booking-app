@@ -79,7 +79,7 @@ export function BookingForm({
             type="email"
             name="clientEmail"
             required
-            placeholder="alex@email.com"
+            placeholder="you@email.com"
             className="w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-muted/60 focus:border-accent"
           />
         </label>

@@ -16,7 +16,7 @@ async function main() {
     data: {
       clerkUserId: demoClerkUserId,
       name: "Alex Rivera",
-      username: "alex",
+      username: "home",
       bio: "Business coach helping founders build personal brands and sustainable growth systems.",
       avatarUrl:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",

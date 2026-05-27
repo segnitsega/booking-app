@@ -28,7 +28,7 @@ Public surfaces use a BrandElevate-inspired editorial look; the dashboard keeps 
 ### Reliability & polish
 - Skeleton loaders, branded empty states, and error boundaries
 - Responsive layouts for profile, booking, and dashboard
-- Prisma models with seeded demo coach (`alex`)
+- Prisma models with seeded featured coach (`home`)
 
 ---
 
@@ -46,19 +46,19 @@ Public surfaces use a BrandElevate-inspired editorial look; the dashboard keeps 
 
 ---
 
-## Demo routes
+## Key routes
 
 After seeding locally:
 
 | Surface | URL |
 | --- | --- |
 | Landing | `/` |
-| Public profile | `/alex` |
-| Book a session | `/alex/discovery-call` |
+| Public profile | `/home` |
+| Book a session | `/home/discovery-call` |
 | Coach login | `/sign-in` |
 | Dashboard | `/dashboard` |
 
-The first signed-in user can claim the seeded `alex` coach when `DEMO_CLAIM_USERNAME=alex` (default) and that coach still uses the demo `clerkUserId` from the seed script.
+The first signed-in user can claim the seeded `home` coach when `DEMO_CLAIM_USERNAME=home` (default) and that coach still uses the demo `clerkUserId` from the seed script.
 
 ---
 
@@ -98,7 +98,7 @@ RESEND_API_KEY=re_...
 RESEND_FROM_EMAIL="BrandElevate <onboarding@resend.dev>"
 
 # Optional: claim seeded coach on first sign-in
-DEMO_CLAIM_USERNAME=alex
+DEMO_CLAIM_USERNAME=home
 ```
 
 ### 3. Database
@@ -175,7 +175,7 @@ npx prisma migrate deploy
 npx prisma db seed
 ```
 
-4. Confirm `/alex` and `/dashboard` after deploy.
+4. Confirm `/home` and `/dashboard` after deploy.
 
 ---
 
