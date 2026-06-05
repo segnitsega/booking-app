@@ -10,7 +10,10 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "docker:up": "docker compose up --build",
+    "docker:seed": "docker compose --profile seed run --rm seed",
+    "docker:down": "docker compose down"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.1",
