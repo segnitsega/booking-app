@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Show } from "@clerk/nextjs";
+import { Show, useUser } from "@clerk/nextjs";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +20,8 @@ type ProfileNavProps = {
 
 export function ProfileNav({ primarySessionHref }: ProfileNavProps) {
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useUser();
+  const isCoach = user?.publicMetadata?.role === "coach";
 
   useEffect(() => {
     const onScroll = () => {
@@ -65,12 +67,14 @@ export function ProfileNav({ primarySessionHref }: ProfileNavProps) {
             </Link>
           </Show>
           <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="hidden rounded-full px-3 py-2 text-xs font-medium text-white/85 transition-colors hover:bg-white/10 hover:text-white sm:inline-flex"
-            >
-              Dashboard
-            </Link>
+            {isCoach ? (
+              <Link
+                href="/dashboard"
+                className="hidden rounded-full px-3 py-2 text-xs font-medium text-white/85 transition-colors hover:bg-white/10 hover:text-white sm:inline-flex"
+              >
+                Dashboard
+              </Link>
+            ) : null}
           </Show>
           <Button
             href={primarySessionHref}

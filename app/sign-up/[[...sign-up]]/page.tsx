@@ -4,18 +4,24 @@ import { BrandLogo } from "@/components/brand/brand-logo";
 import { clerkAuthAppearance } from "@/lib/clerk-appearance";
 
 type SignUpPageProps = {
-  searchParams: Promise<{ redirect_url?: string }>;
+  searchParams: Promise<{ redirect_url?: string; intent?: string }>;
 };
 
 export default async function SignUpPage({ searchParams }: SignUpPageProps) {
-  const { redirect_url: redirectUrl } = await searchParams;
+  const { redirect_url: redirectUrl, intent } = await searchParams;
   const safeRedirect =
     redirectUrl && redirectUrl.startsWith("/") ? redirectUrl : undefined;
+  const role = intent === "coach" ? "coach" : "client";
+  const isCoachIntent = role === "coach";
   const isBookingReturn = Boolean(
     safeRedirect &&
       safeRedirect !== "/dashboard" &&
       !safeRedirect.startsWith("/dashboard"),
   );
+
+  const fallbackRedirect = isCoachIntent
+    ? (safeRedirect ?? "/dashboard")
+    : (safeRedirect ?? "/");
 
   return (
     <main className="relative flex min-h-full flex-1 flex-col overflow-hidden bg-[#f7f5fc]">
@@ -25,12 +31,15 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         <p className="mt-6 text-center text-sm text-muted">
           {isBookingReturn
             ? "Create an account to finish booking your session."
-            : "Create an account to manage sessions and availability."}
+            : isCoachIntent
+              ? "Create a coach account to manage sessions and availability."
+              : "Create an account to book sessions with coaches."}
         </p>
         <div className="mt-8 w-full [&_.cl-cardBox]:shadow-none [&_.cl-card]:shadow-none">
           <SignUp
             forceRedirectUrl={safeRedirect}
-            fallbackRedirectUrl={safeRedirect ?? "/dashboard"}
+            fallbackRedirectUrl={fallbackRedirect}
+            unsafeMetadata={{ role }}
             appearance={clerkAuthAppearance}
           />
         </div>
@@ -40,7 +49,9 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             href={
               safeRedirect
                 ? `/sign-in?redirect_url=${encodeURIComponent(safeRedirect)}`
-                : "/sign-in"
+                : isCoachIntent
+                  ? "/sign-in?redirect_url=%2Fdashboard"
+                  : "/sign-in"
             }
             className="font-medium text-accent hover:text-accent-dark"
           >

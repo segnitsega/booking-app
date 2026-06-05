@@ -138,7 +138,9 @@ export function BookingScheduler({
 
     if (!isSignedIn) {
       const returnTo = `/${username}/${sessionSlug}`;
-      router.push(`/sign-in?redirect_url=${encodeURIComponent(returnTo)}`);
+      router.push(
+        `/sign-in?redirect_url=${encodeURIComponent(returnTo)}`,
+      );
       return;
     }
 

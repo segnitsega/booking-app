@@ -1,20 +1,27 @@
-import { auth } from "@clerk/nextjs/server";
-import { notFound } from "next/navigation";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { DashboardNav } from "@/components/dashboard/dashboard-nav";
 import { getDashboardCoach } from "@/lib/dashboard/coach";
+import { getRoleFromUser } from "@/lib/auth/roles";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Belt-and-suspenders with proxy.ts route protection.
   await auth.protect();
+
+  const user = await currentUser();
+  const role = getRoleFromUser(user);
+
+  if (role !== "coach") {
+    redirect("/access-denied");
+  }
 
   const coach = await getDashboardCoach();
 
   if (!coach) {
-    notFound();
+    redirect("/access-denied");
   }
 
   return (

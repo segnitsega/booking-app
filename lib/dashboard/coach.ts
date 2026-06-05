@@ -1,6 +1,7 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { slugifyTitle } from "@/lib/dashboard/session-type-fields";
+import { getRoleFromUser } from "@/lib/auth/roles";
 
 const coachSelect = {
   id: true,
@@ -31,14 +32,37 @@ async function uniqueUsername(base: string): Promise<string> {
   return `${cleaned.slice(0, 24)}-${Date.now().toString(36)}`;
 }
 
+async function ensureCoachPublicMetadata(userId: string) {
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(userId, {
+    publicMetadata: { role: "coach" },
+  });
+}
+
 /**
  * Resolve the signed-in Clerk user to a Coach row.
- * Creates a coach on first dashboard visit; optionally claims the seeded demo coach.
+ * Only users with the coach role may access / create a coach profile.
+ * Clients never receive a Coach row from this path.
  */
 export async function getDashboardCoach() {
   const { userId } = await auth();
   if (!userId) {
     return null;
+  }
+
+  const user = await currentUser();
+  if (!user) {
+    return null;
+  }
+
+  const role = getRoleFromUser(user);
+  if (role !== "coach") {
+    return null;
+  }
+
+  // Persist role on publicMetadata so client components can read it.
+  if (user.publicMetadata?.role !== "coach") {
+    await ensureCoachPublicMetadata(userId);
   }
 
   const existing = await prisma.coach.findUnique({
@@ -63,11 +87,6 @@ export async function getDashboardCoach() {
         select: coachSelect,
       });
     }
-  }
-
-  const user = await currentUser();
-  if (!user) {
-    return null;
   }
 
   const fullName =

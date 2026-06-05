@@ -55,7 +55,7 @@ export default function Home() {
               Sign in to dashboard
             </Link>
             <Link
-              href="/sign-up?redirect_url=%2Fdashboard"
+              href="/sign-up?intent=coach&redirect_url=%2Fdashboard"
               className="text-sm font-medium text-accent hover:text-accent-dark"
             >
               Create coach account
