@@ -6,7 +6,9 @@ import { ProfileHero } from "@/components/profile/profile-hero";
 import { ProfileAbout } from "@/components/profile/about-section";
 import { SessionTypeCard } from "@/components/profile/session-type-card";
 
-type CoachProfilePageProps = PageProps<"/[username]">;
+type CoachProfilePageProps = {
+  params: Promise<{ username: string }>;
+};
 
 export async function generateMetadata({
   params,

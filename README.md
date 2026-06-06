@@ -31,4 +31,6 @@ npm run db:seed
 npm run dev
 ```
 
-Demo coach username after seeding: `alex` (profile will live at `/alex` once public pages are built).
+Demo coach username after seeding: `alex`
+
+Open the public profile at [http://localhost:3000/alex](http://localhost:3000/alex).
