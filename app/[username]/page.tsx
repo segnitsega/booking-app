@@ -1,14 +1,28 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CalendarDays, Sparkles, Users } from "lucide-react";
+import { Handshake, Images, Sparkles, Users } from "lucide-react";
 import { getCoachByUsername } from "@/lib/coaches";
 import { ProfileHero } from "@/components/profile/profile-hero";
+import { PartnersSection } from "@/components/profile/partners-section";
 import { ProfileAbout } from "@/components/profile/about-section";
-import { SessionTypeCard } from "@/components/profile/session-type-card";
+import {
+  ServicesSection,
+  type ServiceCardData,
+} from "@/components/profile/services-section";
+import { ProcessSection } from "@/components/profile/process-section";
+import { SuccessStoriesSection } from "@/components/profile/success-stories-section";
+import { BlogSection } from "@/components/profile/blog-section";
 
 type CoachProfilePageProps = {
   params: Promise<{ username: string }>;
 };
+
+const SERVICE_IMAGES = [
+  "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
+  "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80",
+];
 
 export async function generateMetadata({
   params,
@@ -23,9 +37,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${coach.name} | SlotWise`,
+    title: `${coach.name} | BrandElevate`,
     description:
-      coach.bio ?? `Book a coaching session with ${coach.name} on SlotWise.`,
+      coach.bio ?? `Book a coaching session with ${coach.name} on BrandElevate.`,
   };
 }
 
@@ -43,38 +57,68 @@ export default async function CoachProfilePage({
   const featuredSlug =
     coach.sessionTypes.find((session) => session.price !== null)?.slug ??
     primarySession?.slug;
+  const fallbackSlug = primarySession?.slug ?? "discovery-call";
 
-  const stats = [
+  const fromDb: ServiceCardData[] = coach.sessionTypes.map((session, index) => ({
+    id: session.id,
+    title: session.title,
+    slug: session.slug,
+    description: session.description,
+    duration: session.duration,
+    price: session.price,
+    imageUrl: SERVICE_IMAGES[index % SERVICE_IMAGES.length],
+    featured: session.slug === featuredSlug,
+  }));
+
+  const extras: ServiceCardData[] = [
     {
-      label: "Sessions completed",
-      value: "120+",
-      icon: CalendarDays,
+      id: "extra-linkedin",
+      title: "LinkedIn & Social Profile Makeover",
+      slug: fallbackSlug,
+      description:
+        "Optimize your digital footprint for visibility, clarity, and inbound opportunities.",
+      duration: 45,
+      price: 12000,
+      imageUrl: SERVICE_IMAGES[2],
     },
     {
-      label: "Years coaching",
-      value: "8",
-      icon: Sparkles,
-    },
-    {
-      label: "Clients coached",
-      value: "45",
-      icon: Users,
+      id: "extra-content",
+      title: "Content Strategy & Visibility Coaching",
+      slug: fallbackSlug,
+      description:
+        "Build a weekly content system that grows trust without living on social all day.",
+      duration: 60,
+      price: 18000,
+      imageUrl: SERVICE_IMAGES[3],
     },
   ];
+
+  const services = [...fromDb, ...extras].slice(0, 4);
+  if (services.length > 0 && !services.some((s) => s.featured)) {
+    services[0].featured = true;
+  }
+
+  const stats = [
+    { label: "Successful members", value: "200+", icon: Users },
+    { label: "Followers generated", value: "6M+", icon: Sparkles },
+    { label: "Satisfied clients", value: "3k+", icon: Handshake },
+    { label: "Branding projects", value: "500+", icon: Images },
+  ];
+
+  const primarySessionHref = primarySession
+    ? `/${coach.username}/${primarySession.slug}`
+    : "#services";
 
   return (
     <main className="flex-1 bg-background">
       <ProfileHero
         name={coach.name}
         bio={coach.bio}
-        avatarUrl={coach.avatarUrl}
         stats={stats}
-        primarySessionHref={
-          primarySession
-            ? `/${coach.username}/${primarySession.slug}`
-            : "#sessions"
-        }
+        primarySessionHref={primarySessionHref}
       />
+
+      <PartnersSection />
 
       <ProfileAbout
         name={coach.name}
@@ -82,43 +126,17 @@ export default async function CoachProfilePage({
         avatarUrl={coach.avatarUrl}
       />
 
-      <section id="sessions" className="bg-white px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-medium tracking-[0.2em] text-accent uppercase">
-              Sessions
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-              Choose the <span className="text-accent">Format</span> That Fits
-            </h2>
-            <p className="mt-4 text-base text-muted">
-              Every session type below is live from the seeded coach profile —
-              pick one to continue into booking.
-            </p>
-          </div>
+      <ServicesSection
+        username={coach.username}
+        services={services}
+        primarySessionHref={primarySessionHref}
+      />
 
-          {coach.sessionTypes.length === 0 ? (
-            <p className="mt-10 rounded-2xl border border-border bg-surface px-6 py-10 text-muted">
-              No active sessions yet. Check back soon.
-            </p>
-          ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
-              {coach.sessionTypes.map((session) => (
-                <SessionTypeCard
-                  key={session.id}
-                  username={coach.username}
-                  title={session.title}
-                  slug={session.slug}
-                  description={session.description}
-                  duration={session.duration}
-                  price={session.price}
-                  featured={session.slug === featuredSlug}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <ProcessSection />
+
+      <SuccessStoriesSection />
+
+      <BlogSection />
     </main>
   );
 }

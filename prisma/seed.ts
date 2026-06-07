@@ -29,7 +29,7 @@ async function main() {
               "A focused intro session to clarify goals, challenges, and whether we are a fit to work together.",
             duration: 30,
             price: null,
-            color: "#7C3AED",
+            color: "#7B68C7",
             isActive: true,
           },
           {
