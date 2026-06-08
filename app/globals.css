@@ -31,8 +31,27 @@
   --radius-pill: 9999px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Offset anchored sections so sticky nav does not cover headings */
+#home,
+#about,
+#services,
+#success-stories,
+#blog {
+  scroll-margin-top: 6.5rem;
 }
