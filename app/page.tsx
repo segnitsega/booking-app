@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -14,8 +13,9 @@ export default function Home() {
           Book a <span className="text-accent">Session</span> That Fits Your Life
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-          A Calendly-style booking experience for coaches. Open the seeded demo
-          profile to explore the public booking surface.
+          Scheduling built for coaches and consultants. Share your booking
+          page, set your hours, and let clients reserve sessions that work for
+          everyone.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button href="/alex" variant="accent">
@@ -27,19 +27,19 @@ export default function Home() {
         </div>
         <p className="mt-6 text-sm text-muted">
           Or go directly to{" "}
-          <Link
+          <a
             href="/alex"
             className="font-medium text-ink underline-offset-4 hover:underline"
           >
             /alex
-          </Link>
+          </a>
           {" · "}
-          <Link
+          <a
             href="/dashboard"
             className="font-medium text-ink underline-offset-4 hover:underline"
           >
             /dashboard
-          </Link>
+          </a>
         </p>
       </div>
     </main>
