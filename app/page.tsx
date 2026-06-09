@@ -18,8 +18,8 @@ export default function Home() {
           everyone.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Button href="/alex" variant="accent">
-            View demo coach
+          <Button href="/sign-up" variant="accent">
+            Get started
           </Button>
           <Button href="/sign-in" variant="outline" showArrow={false}>
             Coach login
