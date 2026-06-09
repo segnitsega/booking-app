@@ -25,22 +25,6 @@ export default function Home() {
             Coach login
           </Button>
         </div>
-        <p className="mt-6 text-sm text-muted">
-          Or go directly to{" "}
-          <a
-            href="/alex"
-            className="font-medium text-ink underline-offset-4 hover:underline"
-          >
-            /alex
-          </a>
-          {" · "}
-          <a
-            href="/dashboard"
-            className="font-medium text-ink underline-offset-4 hover:underline"
-          >
-            /dashboard
-          </a>
-        </p>
       </div>
     </main>
   );
