@@ -10,21 +10,21 @@ export default function NotFound() {
         Page not found
       </h1>
       <p className="mt-4 max-w-md text-muted">
-        That link doesn&apos;t match anything here. Try the demo coach or head
-        home.
+        That link doesn&apos;t match anything here. Head home or sign in to your
+        coach workspace.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm font-semibold">
         <Link
-          href="/alex"
+          href="/"
           className="rounded-full bg-accent px-6 py-3 text-white hover:bg-accent-dark"
         >
-          View demo coach
+          Back home
         </Link>
         <Link
-          href="/"
+          href="/sign-in"
           className="rounded-full border border-border bg-white px-6 py-3 text-ink hover:bg-surface"
         >
-          Back home
+          Coach login
         </Link>
       </div>
     </main>

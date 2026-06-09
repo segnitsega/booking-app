@@ -10,15 +10,15 @@ export default function CoachNotFound() {
         Coach not found
       </h1>
       <p className="mt-4 max-w-md text-muted">
-        That username doesn&apos;t match a profile yet. Try the demo coach or
-        head back home.
+        That username doesn&apos;t match a profile yet. Check the link or create
+        your own booking page.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm font-semibold">
         <Link
-          href="/alex"
+          href="/sign-up"
           className="rounded-full bg-accent px-6 py-3 text-white hover:bg-accent-dark"
         >
-          View demo coach
+          Get started
         </Link>
         <Link
           href="/"
