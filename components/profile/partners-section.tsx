@@ -84,7 +84,7 @@ function PartnerMark({ partner }: { partner: Partner }) {
 
 function PartnerCard({ partner }: { partner: Partner }) {
   return (
-    <div className="flex h-[72px] min-w-[118px] flex-1 items-center justify-center rounded-2xl bg-white px-4 shadow-[0_10px_30px_-18px_rgba(23,23,28,0.35)] ring-1 ring-black/[0.03] sm:min-w-[128px]">
+    <div className="flex h-[72px] min-w-[118px] flex-1 items-center justify-center rounded-2xl bg-white px-4 ring-1 ring-black/[0.03] sm:min-w-[128px]">
       <PartnerMark partner={partner} />
     </div>
   );
