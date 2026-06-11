@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Handshake, Images, Sparkles, Users } from "lucide-react";
+import { ClipboardCheck, Handshake, User, UserPlus } from "lucide-react";
 import { getCoachByUsername } from "@/lib/coaches";
 import { ProfileHero } from "@/components/profile/profile-hero";
 import { PartnersSection } from "@/components/profile/partners-section";
@@ -99,10 +99,10 @@ export default async function CoachProfilePage({
   }
 
   const stats = [
-    { label: "Successful members", value: "200+", icon: Users },
-    { label: "Followers generated", value: "6M+", icon: Sparkles },
-    { label: "Satisfied clients", value: "3k+", icon: Handshake },
-    { label: "Branding projects", value: "500+", icon: Images },
+    { label: "Successful Members", value: "200+", icon: User },
+    { label: "Followers Generated", value: "6M+", icon: UserPlus },
+    { label: "Satisfied Clients", value: "3k+", icon: Handshake },
+    { label: "Branding Projects", value: "500+", icon: ClipboardCheck },
   ];
 
   const primarySessionHref = primarySession
