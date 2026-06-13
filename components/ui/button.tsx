@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ComponentProps } from "react";
 
-type ButtonVariant = "primary" | "secondary" | "accent" | "light" | "ghost";
+type ButtonVariant = "primary" | "secondary" | "accent" | "light" | "ghost" | "outline";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-ink text-white hover:bg-ink/90",
   accent: "bg-accent text-white hover:bg-accent-dark",
   light: "bg-white text-ink hover:bg-white/90",
+  outline:
+    "border border-border bg-white text-ink hover:bg-surface",
   secondary:
     "border border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/15",
   ghost:
@@ -18,6 +20,7 @@ const arrowClasses: Record<ButtonVariant, string> = {
   primary: "bg-white/15 text-white",
   accent: "bg-white/15 text-white",
   light: "bg-ink text-white",
+  outline: "bg-ink text-white",
   secondary: "bg-white/15 text-white",
   ghost: "bg-white/15 text-white",
 };
