@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 import { format, parseISO, startOfMonth } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { BookingCalendar } from "@/components/booking/booking-calendar";
@@ -28,6 +30,8 @@ export function BookingScheduler({
   username,
   sessionSlug,
 }: BookingSchedulerProps) {
+  const router = useRouter();
+  const { isSignedIn, isLoaded } = useAuth();
   const [step, setStep] = useState<"schedule" | "details">("schedule");
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -43,7 +47,6 @@ export function BookingScheduler({
   const [loadingDates, setLoadingDates] = useState(true);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
@@ -130,6 +133,18 @@ export function BookingScheduler({
     ? format(selectedDate, "EEE, MMM d")
     : null;
 
+  function continueToBooking() {
+    if (!selectedDate || !selectedSlot || !isLoaded) return;
+
+    if (!isSignedIn) {
+      const returnTo = `/${username}/${sessionSlug}`;
+      router.push(`/sign-in?redirect_url=${encodeURIComponent(returnTo)}`);
+      return;
+    }
+
+    setStep("details");
+  }
+
   if (step === "details" && selectedSlot && selectedDateLabel) {
     return (
       <BookingForm
@@ -192,15 +207,20 @@ export function BookingScheduler({
           {selectedDate && selectedSlot
             ? `Selected ${selectedDateLabel} at ${selectedSlot.label} (${timezone})`
             : "Select a date and time to continue."}
+          {selectedDate && selectedSlot && !isSignedIn ? (
+            <span className="mt-1 block text-xs">
+              Sign in to confirm your booking.
+            </span>
+          ) : null}
         </p>
         <Button
           type="button"
           variant="accent"
-          disabled={!selectedDate || !selectedSlot}
+          disabled={!selectedDate || !selectedSlot || !isLoaded}
           className="disabled:cursor-not-allowed disabled:opacity-50"
-          onClick={() => setStep("details")}
+          onClick={continueToBooking}
         >
-          Continue
+          {isSignedIn ? "Continue" : "Sign in to book"}
         </Button>
       </div>
     </div>

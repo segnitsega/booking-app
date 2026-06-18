@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { createBooking } from "@/lib/bookings/create-booking";
 
@@ -11,6 +12,11 @@ export async function createBookingAction(
   _prevState: CreateBookingState,
   formData: FormData,
 ): Promise<CreateBookingState> {
+  const { userId } = await auth();
+  if (!userId) {
+    return { error: "Please sign in to book this session." };
+  }
+
   const coachId = String(formData.get("coachId") ?? "");
   const sessionTypeId = String(formData.get("sessionTypeId") ?? "");
   const startUtc = String(formData.get("startUtc") ?? "");
