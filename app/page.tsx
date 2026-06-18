@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
 
+const featuredCoach =
+  process.env.NEXT_PUBLIC_FEATURED_COACH_USERNAME?.trim() || "alex";
+
 export default function Home() {
   return (
     <main className="relative flex flex-1 flex-col overflow-hidden bg-accent-soft">
@@ -18,7 +21,7 @@ export default function Home() {
           everyone.
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Button href="/sign-up" variant="accent">
+          <Button href={`/${featuredCoach}`} variant="accent">
             Get started
           </Button>
           <Button href="/sign-in" variant="outline" showArrow={false}>
