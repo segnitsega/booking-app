@@ -1,18 +1,21 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import type { AvailableSlot } from "@/lib/availability";
 
 type SlotPickerProps = {
   selectedDateLabel: string | null;
-  slots: string[];
-  selectedSlot: string | null;
-  onSelectSlot: (slot: string) => void;
+  slots: AvailableSlot[];
+  selectedSlot: AvailableSlot | null;
+  isLoading?: boolean;
+  onSelectSlot: (slot: AvailableSlot) => void;
 };
 
 export function SlotPicker({
   selectedDateLabel,
   slots,
   selectedSlot,
+  isLoading = false,
   onSelectSlot,
 }: SlotPickerProps) {
   return (
@@ -27,7 +30,22 @@ export function SlotPicker({
       </p>
 
       <AnimatePresence mode="wait">
-        {!selectedDateLabel ? (
+        {isLoading ? (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3"
+          >
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-10 animate-pulse rounded-full bg-surface"
+              />
+            ))}
+          </motion.div>
+        ) : !selectedDateLabel ? (
           <motion.div
             key="empty"
             initial={{ opacity: 0, y: 8 }}
@@ -59,10 +77,10 @@ export function SlotPicker({
             className="mt-5 grid max-h-72 grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3"
           >
             {slots.map((slot) => {
-              const active = selectedSlot === slot;
+              const active = selectedSlot?.startUtc === slot.startUtc;
               return (
                 <button
-                  key={slot}
+                  key={slot.startUtc}
                   type="button"
                   onClick={() => onSelectSlot(slot)}
                   className={[
@@ -72,7 +90,7 @@ export function SlotPicker({
                       : "bg-surface text-ink hover:bg-accent-soft hover:text-accent",
                   ].join(" ")}
                 >
-                  {slot}
+                  {slot.label}
                 </button>
               );
             })}

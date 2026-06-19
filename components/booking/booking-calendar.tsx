@@ -20,6 +20,7 @@ type BookingCalendarProps = {
   month: Date;
   selectedDate: Date | null;
   availableDates: Date[];
+  isLoading?: boolean;
   onMonthChange: (month: Date) => void;
   onSelectDate: (date: Date) => void;
 };
@@ -28,6 +29,7 @@ export function BookingCalendar({
   month,
   selectedDate,
   availableDates,
+  isLoading = false,
   onMonthChange,
   onSelectDate,
 }: BookingCalendarProps) {
@@ -66,43 +68,59 @@ export function BookingCalendar({
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium tracking-wide text-muted uppercase">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-          <div key={day} className="py-2">
-            {day}
+      {isLoading ? (
+        <div className="grid grid-cols-7 gap-1">
+          {Array.from({ length: 35 }).map((_, index) => (
+            <div
+              key={index}
+              className="aspect-square animate-pulse rounded-2xl bg-surface"
+            />
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium tracking-wide text-muted uppercase">
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div key={day} className="py-2">
+                {day}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <div className="mt-1 grid grid-cols-7 gap-1">
-        {days.map((day) => {
-          const inMonth = isSameMonth(day, month);
-          const available = inMonth && isAvailable(day) && !isBefore(day, today);
-          const selected = selectedDate ? isSameDay(day, selectedDate) : false;
+          <div className="mt-1 grid grid-cols-7 gap-1">
+            {days.map((day) => {
+              const inMonth = isSameMonth(day, month);
+              const available =
+                inMonth && isAvailable(day) && !isBefore(day, today);
+              const selected = selectedDate
+                ? isSameDay(day, selectedDate)
+                : false;
 
-          return (
-            <button
-              key={day.toISOString()}
-              type="button"
-              disabled={!available}
-              onClick={() => onSelectDate(day)}
-              className={[
-                "aspect-square rounded-2xl text-sm font-semibold transition-colors",
-                !inMonth ? "text-transparent" : "",
-                inMonth && !available ? "text-muted/40" : "",
-                available && !selected
-                  ? "text-ink hover:bg-accent-soft hover:text-accent"
-                  : "",
-                selected ? "bg-accent text-white" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              {inMonth ? format(day, "d") : ""}
-            </button>
-          );
-        })}
-      </div>
+              return (
+                <button
+                  key={day.toISOString()}
+                  type="button"
+                  disabled={!available}
+                  onClick={() => onSelectDate(day)}
+                  className={[
+                    "aspect-square rounded-2xl text-sm font-semibold transition-colors",
+                    !inMonth ? "text-transparent" : "",
+                    inMonth && !available ? "text-muted/40" : "",
+                    available && !selected
+                      ? "text-ink hover:bg-accent-soft hover:text-accent"
+                      : "",
+                    selected ? "bg-accent text-white" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {inMonth ? format(day, "d") : ""}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
