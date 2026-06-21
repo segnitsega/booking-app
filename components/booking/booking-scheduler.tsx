@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { format, parseISO, startOfMonth } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { BookingCalendar } from "@/components/booking/booking-calendar";
+import { BookingForm } from "@/components/booking/booking-form";
 import { SlotPicker } from "@/components/booking/slot-picker";
 import { TimezonePicker } from "@/components/booking/timezone-picker";
 import type { AvailableSlot } from "@/lib/availability";
@@ -12,10 +13,11 @@ type BookingSchedulerProps = {
   coachId: string;
   sessionTypeId: string;
   coachTimezone: string;
+  username: string;
+  sessionSlug: string;
 };
 
 function toLocalDate(dateYmd: string): Date {
-  // Noon avoids timezone edge cases when converting yyyy-MM-dd → Date for the calendar UI.
   return parseISO(`${dateYmd}T12:00:00`);
 }
 
@@ -23,7 +25,10 @@ export function BookingScheduler({
   coachId,
   sessionTypeId,
   coachTimezone,
+  username,
+  sessionSlug,
 }: BookingSchedulerProps) {
+  const [step, setStep] = useState<"schedule" | "details">("schedule");
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<AvailableSlot | null>(null);
@@ -39,7 +44,6 @@ export function BookingScheduler({
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load which days have openings whenever timezone changes.
   useEffect(() => {
     const controller = new AbortController();
 
@@ -77,7 +81,6 @@ export function BookingScheduler({
     return () => controller.abort();
   }, [coachId, sessionTypeId, timezone]);
 
-  // Load time slots for the selected day.
   useEffect(() => {
     if (!selectedDate) {
       setSlots([]);
@@ -125,6 +128,21 @@ export function BookingScheduler({
     ? format(selectedDate, "EEE, MMM d")
     : null;
 
+  if (step === "details" && selectedSlot && selectedDateLabel) {
+    return (
+      <BookingForm
+        coachId={coachId}
+        sessionTypeId={sessionTypeId}
+        username={username}
+        sessionSlug={sessionSlug}
+        clientTimezone={timezone}
+        selectedSlot={selectedSlot}
+        selectedDateLabel={selectedDateLabel}
+        onBack={() => setStep("schedule")}
+      />
+    );
+  }
+
   return (
     <div className="space-y-5">
       <div className="rounded-[1.75rem] bg-white p-5 ring-1 ring-border sm:p-6">
@@ -167,6 +185,7 @@ export function BookingScheduler({
           variant="accent"
           disabled={!selectedDate || !selectedSlot}
           className="disabled:cursor-not-allowed disabled:opacity-50"
+          onClick={() => setStep("details")}
         >
           Continue
         </Button>

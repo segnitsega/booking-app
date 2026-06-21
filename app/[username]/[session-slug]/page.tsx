@@ -51,6 +51,8 @@ export default async function BookingPage({ params }: BookingPageProps) {
           coachId={data.coach.id}
           sessionTypeId={data.session.id}
           coachTimezone={data.coach.timezone}
+          username={data.coach.username}
+          sessionSlug={data.session.slug}
         />
       </div>
     </main>
