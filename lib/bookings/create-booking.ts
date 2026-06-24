@@ -2,6 +2,7 @@ import { addMinutes } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { prisma } from "@/lib/prisma";
 import { getAvailableSlots } from "@/lib/availability";
+import { sendBookingConfirmationEmail } from "@/lib/email";
 
 export type CreateBookingInput = {
   coachId: string;
@@ -21,8 +22,17 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function getAppBaseUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_APP_URL ??
+    process.env.APP_URL ??
+    "http://localhost:3000"
+  );
+}
+
 /**
  * Create a booking after re-checking that the requested slot is still free.
+ * Sends a confirmation email when Resend is configured.
  */
 export async function createBooking(
   input: CreateBookingInput,
@@ -51,7 +61,7 @@ export async function createBooking(
   const [coach, sessionType] = await Promise.all([
     prisma.coach.findUnique({
       where: { id: input.coachId },
-      select: { id: true, timezone: true },
+      select: { id: true, name: true, username: true, timezone: true },
     }),
     prisma.sessionType.findFirst({
       where: {
@@ -59,7 +69,7 @@ export async function createBooking(
         coachId: input.coachId,
         isActive: true,
       },
-      select: { id: true, duration: true },
+      select: { id: true, title: true, slug: true, duration: true, price: true },
     }),
   ]);
 
@@ -121,6 +131,29 @@ export async function createBooking(
       status: "CONFIRMED",
     },
     select: { id: true },
+  });
+
+  const whenLabel = `${formatInTimeZone(
+    startTime,
+    input.clientTimezone,
+    "EEEE, MMM d · h:mm a",
+  )} (${input.clientTimezone})`;
+
+  const manageUrl = `${getAppBaseUrl()}/${coach.username}/${sessionType.slug}/confirmed?bookingId=${booking.id}`;
+
+  // Booking should succeed even if email delivery fails.
+  await sendBookingConfirmationEmail({
+    to: clientEmail,
+    clientName,
+    coachName: coach.name,
+    sessionTitle: sessionType.title,
+    whenLabel,
+    durationMinutes: sessionType.duration,
+    priceInCents: sessionType.price,
+    notes: clientNotes,
+    manageUrl,
+    startUtc: startTime,
+    timezone: input.clientTimezone,
   });
 
   return { ok: true, bookingId: booking.id };

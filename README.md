@@ -34,3 +34,15 @@ npm run dev
 Demo coach username after seeding: `alex`
 
 Open the public profile at [http://localhost:3000/alex](http://localhost:3000/alex).
+
+## Email (Resend)
+
+Add these to `.env` to send booking confirmation emails:
+
+```bash
+RESEND_API_KEY=re_xxx
+RESEND_FROM_EMAIL="BrandElevate <onboarding@resend.dev>"
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+Bookings still succeed if Resend is not configured; the server logs a warning instead.

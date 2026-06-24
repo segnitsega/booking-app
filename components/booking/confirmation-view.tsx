@@ -52,6 +52,9 @@ export function ConfirmationView({
         <p className="mt-3 text-sm leading-relaxed text-white/70">
           {sessionTitle} with {coachName}
         </p>
+        <p className="mt-2 text-sm text-white/55">
+          A confirmation email is on its way to your inbox.
+        </p>
       </motion.div>
 
       <div className="mt-8 space-y-3 rounded-[1.35rem] bg-white/5 px-5 py-5 text-sm ring-1 ring-white/10">
