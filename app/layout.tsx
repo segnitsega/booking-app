@@ -19,7 +19,11 @@ export const metadata: Metadata = {
     "A booking and scheduling platform for coaches and consultants.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
