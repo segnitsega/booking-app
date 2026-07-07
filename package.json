@@ -13,6 +13,7 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.9.1",
     "@prisma/client": "^6.19.0",
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
