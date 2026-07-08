@@ -41,13 +41,14 @@ export default async function DashboardHomePage() {
   return (
     <div>
       <p className="text-sm font-medium tracking-[0.16em] text-accent uppercase">
-        Welcome back
+        Coach dashboard
       </p>
       <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-ink">
-        {coach.name.split(" ")[0]}&apos;s dashboard
+        {coach.name.split(" ")[0]}&apos;s coaching hub
       </h1>
-      <p className="mt-2 text-sm text-muted">
-        A quick look at what&apos;s coming up. Full history lives in Bookings.
+      <p className="mt-2 max-w-2xl text-sm text-muted">
+        Your private coach workspace — upcoming sessions, booking pulse, and
+        revenue at a glance. Dive into Bookings for the full history.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
