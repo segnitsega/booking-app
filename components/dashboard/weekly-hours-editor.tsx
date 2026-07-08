@@ -68,7 +68,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                 className={[
                   "flex w-full items-center justify-between gap-3 rounded-[1.25rem] px-4 py-3 text-left transition-colors",
                   active
-                    ? "bg-ink text-white"
+                    ? "bg-accent text-white"
                     : "bg-surface text-ink hover:bg-accent-soft/70",
                 ].join(" ")}
               >
@@ -77,7 +77,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                   <p
                     className={[
                       "mt-0.5 text-sm",
-                      active ? "text-white/65" : "text-muted",
+                      active ? "text-white/75" : "text-muted",
                     ].join(" ")}
                   >
                     {day.enabled
@@ -88,7 +88,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                 <span
                   className={[
                     "flex size-9 items-center justify-center rounded-full",
-                    active ? "bg-white text-ink" : "bg-white text-ink",
+                    active ? "bg-white text-accent" : "bg-white text-ink",
                   ].join(" ")}
                 >
                   <ArrowRight className="size-4" aria-hidden />
@@ -96,7 +96,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
               </button>
 
               {active ? (
-                <div className="mt-2 rounded-[1.25rem] bg-ink p-4 text-white">
+                <div className="mt-2 rounded-[1.25rem] bg-accent p-4 text-white">
                   <label className="flex items-center gap-3 text-sm">
                     <input
                       type="checkbox"
@@ -116,7 +116,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                   {day.enabled ? (
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <label className="text-sm">
-                        <span className="mb-1.5 block text-white/70">
+                        <span className="mb-1.5 block text-white/75">
                           Start
                         </span>
                         <input
@@ -127,11 +127,11 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                               startTime: event.target.value,
                             })
                           }
-                          className="w-full rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-white outline-none"
+                          className="w-full rounded-xl border border-white/20 bg-white/15 px-3 py-2 text-white outline-none"
                         />
                       </label>
                       <label className="text-sm">
-                        <span className="mb-1.5 block text-white/70">End</span>
+                        <span className="mb-1.5 block text-white/75">End</span>
                         <input
                           type="time"
                           value={day.endTime}
@@ -140,7 +140,7 @@ export function WeeklyHoursEditor({ initialDays }: WeeklyHoursEditorProps) {
                               endTime: event.target.value,
                             })
                           }
-                          className="w-full rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-white outline-none"
+                          className="w-full rounded-xl border border-white/20 bg-white/15 px-3 py-2 text-white outline-none"
                         />
                       </label>
                     </div>
