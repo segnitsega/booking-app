@@ -13,7 +13,7 @@ const NAV_ITEMS: {
   { href: "/dashboard", label: "Home", exact: true },
   { href: "/dashboard/bookings", label: "Bookings" },
   { href: "/dashboard/availability", label: "Availability" },
-  { href: "/dashboard/session-types", label: "Sessions", disabled: true },
+  { href: "/dashboard/session-types", label: "Sessions" },
   { href: "/dashboard/settings", label: "Settings", disabled: true },
 ];
 
