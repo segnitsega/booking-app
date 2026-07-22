@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import { BrandLogo } from "@/components/brand/brand-logo";
 
 const NAV_ITEMS: {
@@ -66,14 +67,23 @@ export function DashboardNav({ coachName, coachUsername }: DashboardNavProps) {
           </nav>
         </div>
 
-        <div className="text-right">
-          <p className="text-sm font-semibold text-ink">{coachName}</p>
-          <Link
-            href={`/${coachUsername}`}
-            className="text-xs text-muted hover:text-accent"
-          >
-            View public profile
-          </Link>
+        <div className="flex items-center gap-3">
+          <div className="hidden text-right sm:block">
+            <p className="text-sm font-semibold text-ink">{coachName}</p>
+            <Link
+              href={`/${coachUsername}`}
+              className="text-xs text-muted hover:text-accent"
+            >
+              View public profile
+            </Link>
+          </div>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "size-9",
+              },
+            }}
+          />
         </div>
       </div>
 

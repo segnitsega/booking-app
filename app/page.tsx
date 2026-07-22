@@ -17,9 +17,12 @@ export default function Home() {
           A Calendly-style booking experience for coaches. Open the seeded demo
           profile to explore the public booking surface.
         </p>
-        <div className="mt-10">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button href="/alex" variant="accent">
             View demo coach
+          </Button>
+          <Button href="/sign-in" variant="outline" showArrow={false}>
+            Coach login
           </Button>
         </div>
         <p className="mt-6 text-sm text-muted">
@@ -29,6 +32,13 @@ export default function Home() {
             className="font-medium text-ink underline-offset-4 hover:underline"
           >
             /alex
+          </Link>
+          {" · "}
+          <Link
+            href="/dashboard"
+            className="font-medium text-ink underline-offset-4 hover:underline"
+          >
+            /dashboard
           </Link>
         </p>
       </div>
