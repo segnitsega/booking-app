@@ -15,7 +15,7 @@ const NAV_ITEMS: {
   { href: "/dashboard/bookings", label: "Bookings" },
   { href: "/dashboard/availability", label: "Availability" },
   { href: "/dashboard/session-types", label: "Sessions" },
-  { href: "/dashboard/settings", label: "Settings", disabled: true },
+  { href: "/dashboard/settings", label: "Settings" },
 ];
 
 type DashboardNavProps = {
