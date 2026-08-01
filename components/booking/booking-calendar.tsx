@@ -69,19 +69,38 @@ export function BookingCalendar({
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-7 gap-1">
-          {Array.from({ length: 35 }).map((_, index) => (
-            <div
-              key={index}
-              className="aspect-square animate-pulse rounded-2xl bg-surface"
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium tracking-wide text-muted uppercase">
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+              <div key={`${day}-${index}`} className="py-2 sm:hidden">
+                {day}
+              </div>
+            ))}
+            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              <div key={day} className="hidden py-2 sm:block">
+                {day}
+              </div>
+            ))}
+          </div>
+          <div className="mt-1 grid grid-cols-7 gap-1">
+            {Array.from({ length: 35 }).map((_, index) => (
+              <div
+                key={index}
+                className="aspect-square animate-pulse rounded-2xl bg-surface"
+              />
+            ))}
+          </div>
+        </>
       ) : (
         <>
           <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium tracking-wide text-muted uppercase">
+            {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+              <div key={`${day}-${index}`} className="py-2 sm:hidden">
+                {day}
+              </div>
+            ))}
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div key={day} className="py-2">
+              <div key={day} className="hidden py-2 sm:block">
                 {day}
               </div>
             ))}

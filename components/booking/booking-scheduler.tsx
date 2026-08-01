@@ -44,6 +44,8 @@ export function BookingScheduler({
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [reloadKey, setReloadKey] = useState(0);
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -79,7 +81,7 @@ export function BookingScheduler({
 
     void loadDates();
     return () => controller.abort();
-  }, [coachId, sessionTypeId, timezone]);
+  }, [coachId, sessionTypeId, timezone, reloadKey]);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -172,9 +174,20 @@ export function BookingScheduler({
         onSelectSlot={setSelectedSlot}
       />
 
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? (
+        <div className="flex flex-col gap-3 rounded-[1.25rem] bg-red-50 px-4 py-3 ring-1 ring-red-100 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-red-700">{error}</p>
+          <button
+            type="button"
+            onClick={() => setReloadKey((value) => value + 1)}
+            className="text-sm font-semibold text-red-700 underline-offset-2 hover:underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="sticky bottom-3 z-10 flex flex-col gap-3 rounded-[1.5rem] bg-white/95 p-4 ring-1 ring-border backdrop-blur-md sm:static sm:flex-row sm:items-center sm:justify-between sm:bg-transparent sm:p-0 sm:ring-0 sm:backdrop-blur-none">
         <p className="text-sm text-muted">
           {selectedDate && selectedSlot
             ? `Selected ${selectedDateLabel} at ${selectedSlot.label} (${timezone})`
