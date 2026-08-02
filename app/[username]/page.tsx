@@ -40,6 +40,23 @@ export async function generateMetadata({
     title: `${coach.name} | BrandElevate`,
     description:
       coach.bio ?? `Book a coaching session with ${coach.name} on BrandElevate.`,
+    openGraph: {
+      title: `${coach.name} | BrandElevate`,
+      description:
+        coach.bio ??
+        `Book a coaching session with ${coach.name} on BrandElevate.`,
+      type: "profile",
+      images: coach.avatarUrl
+        ? [{ url: coach.avatarUrl, alt: coach.name }]
+        : undefined,
+    },
+    twitter: {
+      card: "summary",
+      title: `${coach.name} | BrandElevate`,
+      description:
+        coach.bio ??
+        `Book a coaching session with ${coach.name} on BrandElevate.`,
+    },
   };
 }
 

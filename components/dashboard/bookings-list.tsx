@@ -14,12 +14,14 @@ type BookingsListProps = {
   bookings: CoachBookingListItem[];
   filter: BookingListFilter;
   coachTimezone: string;
+  coachUsername: string;
 };
 
 export function BookingsList({
   bookings,
   filter,
   coachTimezone,
+  coachUsername,
 }: BookingsListProps) {
   return (
     <div>
@@ -36,7 +38,7 @@ export function BookingsList({
           </p>
         </div>
 
-        <div className="flex gap-2 rounded-full bg-white p-1 ring-1 ring-border">
+        <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:overflow-visible sm:rounded-full sm:bg-white sm:p-1 sm:ring-1 sm:ring-border sm:pb-1">
           {FILTERS.map((item) => {
             const active = item.value === filter;
             return (
@@ -44,10 +46,10 @@ export function BookingsList({
                 key={item.value}
                 href={`/dashboard/bookings?filter=${item.value}`}
                 className={[
-                  "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                  "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   active
                     ? "bg-accent text-white"
-                    : "text-muted hover:text-ink",
+                    : "bg-white text-muted ring-1 ring-border hover:text-ink sm:bg-transparent sm:ring-0",
                 ].join(" ")}
               >
                 {item.label}
@@ -61,13 +63,21 @@ export function BookingsList({
         {bookings.length === 0 ? (
           <div className="px-6 py-16 text-center">
             <p className="text-base font-semibold text-ink">No bookings here</p>
-            <p className="mt-2 text-sm text-muted">
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
               {filter === "upcoming"
                 ? "When clients book, upcoming sessions will show up in this list."
                 : filter === "past"
                   ? "Completed and past sessions will appear here."
                   : "Cancelled sessions will appear here."}
             </p>
+            {filter === "upcoming" ? (
+              <Link
+                href={`/${coachUsername}`}
+                className="mt-5 inline-flex rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
+              >
+                Share your booking page
+              </Link>
+            ) : null}
           </div>
         ) : (
           <ul className="divide-y divide-border">

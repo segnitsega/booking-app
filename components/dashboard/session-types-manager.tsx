@@ -73,10 +73,22 @@ export function SessionTypesManager({
         ) : null}
 
         {initialSessions.length === 0 ? (
-          <p className="mt-8 text-sm text-muted">
-            No session types yet. Create your first offer to start taking
-            bookings.
-          </p>
+          <div className="mt-8 rounded-2xl bg-surface px-5 py-10 text-center ring-1 ring-border">
+            <p className="text-base font-semibold text-ink">
+              No session types yet
+            </p>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
+              Create your first offer — duration, price, and booking URL — to
+              start taking clients.
+            </p>
+            <button
+              type="button"
+              onClick={() => setMode({ kind: "create" })}
+              className="mt-5 inline-flex rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
+            >
+              Create a session
+            </button>
+          </div>
         ) : (
           <ul className="mt-6 divide-y divide-border rounded-2xl ring-1 ring-border">
             {initialSessions.map((session) => (

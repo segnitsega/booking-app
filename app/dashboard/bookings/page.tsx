@@ -37,6 +37,7 @@ export default async function DashboardBookingsPage({
       bookings={bookings}
       filter={filter}
       coachTimezone={coach.timezone}
+      coachUsername={coach.username}
     />
   );
 }

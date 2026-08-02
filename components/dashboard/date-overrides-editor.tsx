@@ -142,7 +142,13 @@ export function DateOverridesEditor({
         ) : null}
 
         {initialOverrides.length === 0 ? (
-          <p className="mt-3 text-sm text-muted">No upcoming overrides.</p>
+          <div className="mt-3 rounded-2xl bg-surface px-4 py-6 text-center">
+            <p className="text-sm font-medium text-ink">No upcoming overrides</p>
+            <p className="mt-1 text-xs text-muted">
+              Add a day off or special hours when your weekly schedule needs an
+              exception.
+            </p>
+          </div>
         ) : (
           <ul className="mt-3 divide-y divide-border rounded-2xl ring-1 ring-border">
             {initialOverrides.map((override) => (

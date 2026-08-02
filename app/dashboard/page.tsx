@@ -87,8 +87,20 @@ export default async function DashboardHomePage() {
         </div>
 
         {nextSessions.length === 0 ? (
-          <div className="px-6 py-12 text-center text-sm text-muted">
-            No upcoming bookings yet. Share your public profile to get started.
+          <div className="px-6 py-14 text-center">
+            <p className="text-base font-semibold text-ink">
+              No upcoming sessions yet
+            </p>
+            <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
+              Share your public profile so clients can book. New reservations
+              will land here first.
+            </p>
+            <Link
+              href={`/${coach.username}`}
+              className="mt-5 inline-flex rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
+            >
+              Open public profile
+            </Link>
           </div>
         ) : (
           <ul className="divide-y divide-border">

@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   title: "SlotWise",
   description:
     "A booking and scheduling platform for coaches and consultants.",
+  openGraph: {
+    title: "SlotWise",
+    description:
+      "A booking and scheduling platform for coaches and consultants.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
