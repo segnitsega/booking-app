@@ -53,5 +53,9 @@ body {
 #services,
 #success-stories,
 #blog {
-  scroll-margin-top: 6.5rem;
+  scroll-margin-top: 7.5rem;
+
+  @media (min-width: 1024px) {
+    scroll-margin-top: 6rem;
+  }
 }

@@ -36,7 +36,7 @@ export default async function BookingPage({ params }: BookingPageProps) {
 
   return (
     <main className="flex-1 bg-[#f7f5fc]">
-      <div className="mx-auto grid max-w-6xl gap-6 px-6 py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:py-14">
+      <div className="mx-auto grid max-w-6xl gap-5 px-4 py-8 sm:gap-6 sm:px-6 sm:py-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:py-14">
         <SessionDetailsPanel
           coachName={data.coach.name}
           coachUsername={data.coach.username}

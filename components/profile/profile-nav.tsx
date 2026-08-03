@@ -63,7 +63,7 @@ export function ProfileNav({ primarySessionHref }: ProfileNavProps) {
         </Button>
       </div>
 
-      <nav className="pointer-events-auto mx-auto mt-3 flex max-w-6xl gap-2 overflow-x-auto pb-1 lg:hidden">
+      <nav className="pointer-events-auto mx-auto mt-3 flex max-w-6xl gap-2 overflow-x-auto pb-1 [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
         {NAV_LINKS.map((link) => (
           <a
             key={link.href}

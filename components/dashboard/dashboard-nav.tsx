@@ -27,9 +27,9 @@ export function DashboardNav({ coachName, coachUsername }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-border bg-white">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-        <div className="flex items-center gap-6">
+    <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-4">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-6">
           <BrandLogo href="/dashboard" />
           <nav className="hidden items-center gap-1 md:flex">
             {NAV_ITEMS.map((item) => {
@@ -67,14 +67,16 @@ export function DashboardNav({ coachName, coachUsername }: DashboardNavProps) {
           </nav>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden text-right sm:block">
-            <p className="text-sm font-semibold text-ink">{coachName}</p>
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="text-right">
+            <p className="truncate text-sm font-semibold text-ink max-w-[7.5rem] sm:max-w-none">
+              {coachName}
+            </p>
             <Link
               href={`/${coachUsername}`}
-              className="text-xs text-muted hover:text-accent"
+              className="text-[11px] text-muted hover:text-accent sm:text-xs"
             >
-              View public profile
+              Public profile
             </Link>
           </div>
           <UserButton
@@ -87,7 +89,7 @@ export function DashboardNav({ coachName, coachUsername }: DashboardNavProps) {
         </div>
       </div>
 
-      <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-6 pb-3 md:hidden">
+      <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 [scrollbar-width:none] sm:px-6 md:hidden [&::-webkit-scrollbar]:hidden">
         {NAV_ITEMS.filter((item) => !item.disabled).map((item) => {
           const active = item.exact
             ? pathname === item.href
@@ -98,8 +100,8 @@ export function DashboardNav({ coachName, coachUsername }: DashboardNavProps) {
               key={item.href}
               href={item.href}
               className={[
-                "shrink-0 rounded-full px-3 py-1.5 text-xs font-medium",
-                active ? "bg-accent-soft text-accent" : "bg-surface text-muted",
+                "shrink-0 rounded-full px-3.5 py-2 text-xs font-medium",
+                active ? "bg-accent text-white" : "bg-surface text-muted",
               ].join(" ")}
             >
               {item.label}

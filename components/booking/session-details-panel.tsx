@@ -23,7 +23,7 @@ export function SessionDetailsPanel({
   price,
 }: SessionDetailsPanelProps) {
   return (
-    <aside className="rounded-[1.75rem] bg-white p-7 ring-1 ring-border lg:p-8">
+    <aside className="rounded-[1.75rem] bg-white p-5 ring-1 ring-border sm:p-7 lg:p-8">
       <Link
         href={`/${coachUsername}`}
         className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-ink"
@@ -32,8 +32,8 @@ export function SessionDetailsPanel({
         Back to profile
       </Link>
 
-      <div className="mt-8 flex items-center gap-3">
-        <div className="relative size-12 overflow-hidden rounded-full bg-accent-soft">
+      <div className="mt-5 flex items-center gap-3 sm:mt-8">
+        <div className="relative size-11 overflow-hidden rounded-full bg-accent-soft sm:size-12">
           {coachAvatarUrl ? (
             <Image
               src={coachAvatarUrl}
@@ -55,11 +55,11 @@ export function SessionDetailsPanel({
         </div>
       </div>
 
-      <h1 className="mt-8 text-3xl font-extrabold tracking-tight text-ink">
+      <h1 className="mt-5 text-2xl font-extrabold tracking-tight text-ink sm:mt-8 sm:text-3xl">
         {title}
       </h1>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3 text-sm font-medium text-ink">
+      <div className="mt-4 flex flex-wrap items-center gap-2 text-sm font-medium text-ink sm:mt-5 sm:gap-3">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1.5 text-accent">
           <Clock className="size-3.5" aria-hidden />
           {formatDuration(duration)}
@@ -70,7 +70,9 @@ export function SessionDetailsPanel({
       </div>
 
       {description ? (
-        <p className="mt-6 text-sm leading-relaxed text-muted">{description}</p>
+        <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-muted sm:mt-6 sm:line-clamp-none">
+          {description}
+        </p>
       ) : null}
     </aside>
   );
